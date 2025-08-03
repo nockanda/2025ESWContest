@@ -1,0 +1,865 @@
+[
+    {
+        "id": "3f897421ca8bb1ca",
+        "type": "socketcan-out",
+        "z": "923f932cb3917264",
+        "name": "socketcan-out",
+        "config": "52324998d518cf5d",
+        "x": 170,
+        "y": 120,
+        "wires": [
+            [
+                "eb2207e7beda481b"
+            ]
+        ]
+    },
+    {
+        "id": "8dc2859da2864d1d",
+        "type": "ui_template",
+        "z": "923f932cb3917264",
+        "group": "51f10fd8671f20d4",
+        "name": "",
+        "order": 1,
+        "width": 19,
+        "height": 5,
+        "format": "<style>\n  .box {\n    width: 160px;\n    height: 220px;\n    border: 2px solid #3498db;\n    border-radius: 8px;\n    padding: 10px;\n    margin: 10px;\n    box-sizing: border-box;\n    text-align: center;\n    background-color: #f0f8ff;\n    /* Default background color */\n    display: inline-block;\n  }\n\n  .box .id {\n    font-size: 20px;\n    font-weight: bold;\n    color: #2c3e50;\n  }\n\n  .box .dist {\n    font-size: 40px;\n    /* Increase font size for dist */\n    color: #2c3e50;\n  }\n\n  .box img {\n    width: 90%;\n    /* Set image width to 100% of the box */\n    height: 90%;\n    /* Set image height to 100% of the box */\n    object-fit: contain;\n    /* Ensures the aspect ratio is maintained */\n    margin-top: -30px;\n    /* Move the image 50px upwards */\n  }\n\n  .box-container {\n    display: flex;\n    flex-wrap: wrap;\n  }\n</style>\n\n<div class=\"box-container\" id=\"boxContainer\"></div>\n\n<script>\n  (function(scope) {\n    var data = {};  // Use an object to store data by id\n\n    scope.$watch('msg.payload', function(newValue, oldValue) {\n      if (newValue) {\n        // If the dist is greater than 10.0, remove the item from the data object\n        if (newValue.dist > 10.0) {\n          delete data[newValue.id];  // Remove item with the same id\n        } else {\n          // Otherwise, update/add the data for the given id\n          data[newValue.id] = newValue;\n        }\n\n        // Filter and remove items where dist > 10.0\n        var filteredData = Object.values(data).filter(function(item) {\n          return item.dist <= 10.0;  // Only include items with dist <= 10.0\n        }).sort(function(a, b) {\n          return a.dist - b.dist;  // Sort by dist in ascending order\n        });\n\n        var boxContainer = document.getElementById('boxContainer');\n        boxContainer.innerHTML = '';  // Clear existing boxes\n\n        // Create new boxes for filtered and sorted data\n        filteredData.forEach(function(item) {\n          var box = document.createElement('div');\n          box.classList.add('box');\n          \n          // Change background color if dist is less than 3\n          if (item.dist < 3) {\n            box.style.backgroundColor = 'red';  // Set background to red\n          }\n\n          var id = document.createElement('div');\n          id.classList.add('id');\n          id.textContent = 'ID: ' + item.id;\n          \n          var dist = document.createElement('div');\n          dist.classList.add('dist');\n          dist.textContent = item.dist.toFixed(2) + ' m';  // Add unit 'm' after dist\n          \n          var img = document.createElement('img');\n          // Set image source based on the id\n          img.src = '/car' + item.id + '.png';  // car0.png, car1.png, car2.png, etc.\n          img.alt = 'Car image';\n          \n          box.appendChild(id);\n          box.appendChild(dist);\n          box.appendChild(img);\n          boxContainer.appendChild(box);\n        });\n      }\n    });\n  })(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 700,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "323d3eab45b4c42a",
+        "type": "inject",
+        "z": "923f932cb3917264",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"id\": 0, \"dist\": 100}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 400,
+        "wires": [
+            [
+                "8dc2859da2864d1d"
+            ]
+        ]
+    },
+    {
+        "id": "6663aba82001c856",
+        "type": "inject",
+        "z": "923f932cb3917264",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"id\": 1, \"dist\": 100}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 440,
+        "wires": [
+            [
+                "8dc2859da2864d1d"
+            ]
+        ]
+    },
+    {
+        "id": "647a0f21eb099abd",
+        "type": "inject",
+        "z": "923f932cb3917264",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"id\": 2, \"dist\": 100}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 480,
+        "wires": [
+            [
+                "8dc2859da2864d1d"
+            ]
+        ]
+    },
+    {
+        "id": "6e11b2ebf45e4fb2",
+        "type": "inject",
+        "z": "923f932cb3917264",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"id\": 3, \"dist\": 100}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 520,
+        "wires": [
+            [
+                "8dc2859da2864d1d"
+            ]
+        ]
+    },
+    {
+        "id": "22199c93cdbf488c",
+        "type": "function",
+        "z": "923f932cb3917264",
+        "name": "id0_reset",
+        "func": "var old = global.get(\"id0\");\n\nif (old == null) return;\n\nvar limit = 5;\n\nvar t = Math.floor(Date.now() / 1000);\n\nif (t - old > limit){\n    msg.payload = {\n        id:0,\n        dist:100\n    };\n    global.set(\"id0\",null);\n\n    return msg;\n    \n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 420,
+        "wires": [
+            [
+                "8dc2859da2864d1d"
+            ]
+        ]
+    },
+    {
+        "id": "65ab5442d4efd5b2",
+        "type": "inject",
+        "z": "923f932cb3917264",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "str",
+        "x": 550,
+        "y": 420,
+        "wires": [
+            [
+                "22199c93cdbf488c",
+                "a386cef72f640e46",
+                "10c6fb9761339787",
+                "7ffb2ef7f55111ba"
+            ]
+        ]
+    },
+    {
+        "id": "d279746116984d43",
+        "type": "function",
+        "z": "923f932cb3917264",
+        "name": "time_set",
+        "func": "var t = Math.floor(Date.now() / 1000);\nvar id = \"id\" + msg.payload.id;\nglobal.set(id, t);\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 660,
+        "wires": [
+            [
+                "8dc2859da2864d1d"
+            ]
+        ]
+    },
+    {
+        "id": "a386cef72f640e46",
+        "type": "function",
+        "z": "923f932cb3917264",
+        "name": "id1_reset",
+        "func": "var old = global.get(\"id1\");\n\nif (old == null) return;\n\nvar limit = 5;\n\nvar t = Math.floor(Date.now() / 1000);\n\nif (t - old > limit){\n    msg.payload = {\n        id:1,\n        dist:100\n    };\n    global.set(\"id1\",null);\n\n    return msg;\n    \n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 460,
+        "wires": [
+            [
+                "8dc2859da2864d1d"
+            ]
+        ]
+    },
+    {
+        "id": "10c6fb9761339787",
+        "type": "function",
+        "z": "923f932cb3917264",
+        "name": "id2_reset",
+        "func": "var old = global.get(\"id2\");\n\nif (old == null) return;\n\nvar limit = 5;\n\nvar t = Math.floor(Date.now() / 1000);\n\nif (t - old > limit){\n    msg.payload = {\n        id:2,\n        dist:100\n    };\n    global.set(\"id2\",null);\n\n    return msg;\n    \n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 500,
+        "wires": [
+            [
+                "8dc2859da2864d1d"
+            ]
+        ]
+    },
+    {
+        "id": "7ffb2ef7f55111ba",
+        "type": "function",
+        "z": "923f932cb3917264",
+        "name": "id3_reset",
+        "func": "var old = global.get(\"id3\");\n\nif (old == null) return;\n\nvar limit = 5;\n\nvar t = Math.floor(Date.now() / 1000);\n\nif (t - old > limit){\n    msg.payload = {\n        id:3,\n        dist:100\n    };\n    global.set(\"id3\",null);\n\n    return msg;\n    \n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 540,
+        "wires": [
+            [
+                "8dc2859da2864d1d"
+            ]
+        ]
+    },
+    {
+        "id": "c7452cdde2ccc932",
+        "type": "inject",
+        "z": "923f932cb3917264",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"id\": 0, \"dist\": 1.2}",
+        "payloadType": "json",
+        "x": 250,
+        "y": 660,
+        "wires": [
+            [
+                "d279746116984d43"
+            ]
+        ]
+    },
+    {
+        "id": "beb833b9506c2d36",
+        "type": "ui_gauge",
+        "z": "923f932cb3917264",
+        "name": "",
+        "group": "51f10fd8671f20d4",
+        "order": 7,
+        "width": 5,
+        "height": 5,
+        "gtype": "donut",
+        "title": "가속페달",
+        "label": "RPM",
+        "format": "{{msg.payload.pedal}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 900,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "7c2867fd042a0d0f",
+        "type": "ui_gauge",
+        "z": "923f932cb3917264",
+        "name": "",
+        "group": "51f10fd8671f20d4",
+        "order": 9,
+        "width": 5,
+        "height": 5,
+        "gtype": "donut",
+        "title": "자동차속도",
+        "label": "km/h",
+        "format": "{{msg.payload.speed}}",
+        "min": 0,
+        "max": "300",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 910,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "eb2207e7beda481b",
+        "type": "switch",
+        "z": "923f932cb3917264",
+        "name": "",
+        "property": "payload.canid",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "3",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 350,
+        "y": 120,
+        "wires": [
+            [
+                "baf91d5c147bb6fd"
+            ],
+            [
+                "74c6977d055b8a94"
+            ],
+            [
+                "3f6422c06ec059d6"
+            ]
+        ]
+    },
+    {
+        "id": "baf91d5c147bb6fd",
+        "type": "buffer-parser",
+        "z": "923f932cb3917264",
+        "name": "uwb_control",
+        "data": "payload.rawData",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "byte",
+                "name": "id",
+                "offset": 0,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "floatle",
+                "name": "dist",
+                "offset": 1,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "keyvalue",
+        "resultTypeType": "return",
+        "multipleResult": false,
+        "fanOutMultipleResult": false,
+        "setTopic": true,
+        "outputs": 1,
+        "x": 550,
+        "y": 60,
+        "wires": [
+            [
+                "24b2d4604365730f"
+            ]
+        ]
+    },
+    {
+        "id": "24b2d4604365730f",
+        "type": "link out",
+        "z": "923f932cb3917264",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [
+            "52d7e95ee9a5b3ce"
+        ],
+        "x": 725,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "52d7e95ee9a5b3ce",
+        "type": "link in",
+        "z": "923f932cb3917264",
+        "name": "link in 1",
+        "links": [
+            "24b2d4604365730f"
+        ],
+        "x": 285,
+        "y": 600,
+        "wires": [
+            [
+                "d279746116984d43",
+                "70804e4896914d1f"
+            ]
+        ]
+    },
+    {
+        "id": "74c6977d055b8a94",
+        "type": "buffer-parser",
+        "z": "923f932cb3917264",
+        "name": "pedal_control",
+        "data": "payload.rawData",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "uint16le",
+                "name": "pedal",
+                "offset": 0,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "keyvalue",
+        "resultTypeType": "return",
+        "multipleResult": false,
+        "fanOutMultipleResult": false,
+        "setTopic": true,
+        "outputs": 1,
+        "x": 560,
+        "y": 120,
+        "wires": [
+            [
+                "4c4428bc25e7c4a5",
+                "e14e6df612773645"
+            ]
+        ]
+    },
+    {
+        "id": "4c4428bc25e7c4a5",
+        "type": "function",
+        "z": "923f932cb3917264",
+        "name": "function 1",
+        "func": "if(msg.payload.pedal < 900) msg.payload.pedal =0;\nif(msg.payload.pedal > 3000) msg.payload.pedal =3000;\n\nvar weight = msg.payload.pedal / 3000;\n\nmsg.payload.pedal = weight*100;\nmsg.payload.pedal = msg.payload.pedal.toFixed(2);\n\nvar speed = global.get(\"speed\") | 0;\n\n\nvar msg2 = {};\n\nif(weight < 0.01){\n    speed = speed - 5 * 0.5;\n    if (speed < 0) speed=0;\n}else{\n    speed = speed + 5 * weight;\n    if (speed > 300) speed = 300;\n}\nglobal.set(\"speed\", speed);\nmsg.payload.speed = speed.toFixed(2);\n\nreturn [msg, msg2];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 120,
+        "wires": [
+            [
+                "beb833b9506c2d36",
+                "7c2867fd042a0d0f"
+            ]
+        ]
+    },
+    {
+        "id": "3f6422c06ec059d6",
+        "type": "function",
+        "z": "923f932cb3917264",
+        "name": "belt_control",
+        "func": "global.set(\"belt\", msg.payload.data[0]);\n//1이면 착용 0이면 미착용",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e14e6df612773645",
+        "type": "function",
+        "z": "923f932cb3917264",
+        "name": "function 2",
+        "func": "\nvar speed = global.get(\"speed\") | 0;\nvar belt = global.get(\"belt\") | 0;\nvar popup = global.get(\"popup\") | 0;\n\n\n//밸트안했으면 에러출력\nif (speed > 0 && belt == 0 && popup == 0) {\n    global.set(\"popup\", 1);\n    //팝업출력메시지 발사\n    msg.popup = true;\n    return msg;\n}\n\nif (popup == 1 && belt == 1){\n    global.set(\"popup\", 0);\n    msg.popup = false;\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 160,
+        "wires": [
+            [
+                "c0b059d76a4b273f"
+            ]
+        ]
+    },
+    {
+        "id": "d01c98b525551824",
+        "type": "inject",
+        "z": "923f932cb3917264",
+        "name": "초기화",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 240,
+        "wires": [
+            [
+                "406bb098d5e3dba4",
+                "4b9233b3a5b32c97",
+                "dfb99a2c8d53d7d4"
+            ]
+        ]
+    },
+    {
+        "id": "406bb098d5e3dba4",
+        "type": "change",
+        "z": "923f932cb3917264",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "belt",
+                "pt": "global",
+                "to": "0",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 280,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4b9233b3a5b32c97",
+        "type": "change",
+        "z": "923f932cb3917264",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "speed",
+                "pt": "global",
+                "to": "0",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 280,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "dfb99a2c8d53d7d4",
+        "type": "change",
+        "z": "923f932cb3917264",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "popup",
+                "pt": "global",
+                "to": "0",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 280,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "71d3a55c5eda892e",
+        "type": "ui_template",
+        "z": "923f932cb3917264",
+        "group": "51f10fd8671f20d4",
+        "name": "자동차이미지",
+        "order": 8,
+        "width": 10,
+        "height": 5,
+        "format": "<img src=\"/model_360.png\" style=\"width: 100%; height: 100%;\">",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 920,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "de607036a20bbf19",
+        "type": "exec",
+        "z": "923f932cb3917264",
+        "command": "aplay ~/.node-red/root/nockanda.wav",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 930,
+        "y": 360,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b23c3f9e36c03cb8",
+        "type": "delay",
+        "z": "923f932cb3917264",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 670,
+        "y": 360,
+        "wires": [
+            [
+                "de607036a20bbf19"
+            ]
+        ]
+    },
+    {
+        "id": "70804e4896914d1f",
+        "type": "switch",
+        "z": "923f932cb3917264",
+        "name": "",
+        "property": "payload.dist",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lt",
+                "v": "3",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 510,
+        "y": 360,
+        "wires": [
+            [
+                "b23c3f9e36c03cb8"
+            ]
+        ]
+    },
+    {
+        "id": "c0b059d76a4b273f",
+        "type": "ui_template",
+        "z": "923f932cb3917264",
+        "group": "51f10fd8671f20d4",
+        "name": "벨트팝업",
+        "order": 2,
+        "width": 1,
+        "height": 1,
+        "format": "<style>\n    /* 전체 페이지에서 스크롤 방지 */\n    body {\n        overflow: hidden;\n    }\n\n    /* 배경 오버레이 */\n    #custom-popup-overlay {\n        position: fixed;\n        top: 0;\n        left: 0;\n        width: 100vw;\n        /* 전체 너비 */\n        height: 100vh;\n        /* 전체 높이 */\n        background: rgba(0, 0, 0, 0.5);\n        display: none;\n        justify-content: center;\n        align-items: center;\n        z-index: 9999;\n    }\n\n    /* 팝업 박스 */\n    #custom-popup {\n        width: 400px; /* 팝업 너비 고정 */\n        max-width: 90vw; /* 화면이 작을 경우 대비 */\n        height: auto; /* 내용에 따라 높이 자동 조정 */\n        max-height: 90vh; /* 화면을 넘지 않도록 */\n        overflow: auto; /* 내용이 넘칠 경우 내부 스크롤 */\n        \n        background-color: white; /* 배경을 흰색으로 설정 */\n        padding: 20px;\n        border-radius: 10px;\n        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);\n        \n        position: fixed;\n        top: 50%;\n        left: 50%;\n        transform: translate(-50%, -50%);\n        \n        display: flex; /* flexbox 적용 */\n        flex-direction: column; /* 내부 요소를 세로 정렬 */\n        align-items: center; /* 가로 가운데 정렬 */\n        justify-content: center; /* 세로 가운데 정렬 */\n        text-align: center; /* 내부 텍스트 중앙 정렬 */\n    }\n\n    /* 닫기 버튼 */\n    .popup-close {\n        background: red;\n        color: white;\n        padding: 10px;\n        border: none;\n        cursor: pointer;\n        margin-top: 10px;\n    }\n</style>\n\n<div id=\"custom-popup-overlay\">\n    <div id=\"custom-popup\">\n        <p><img src=/belt.gif></p>\n        <p><h1>안전벨트를 착용해주세요!</h1></p>\n    </div>\n</div>\n\n<script>\n    (function(scope) {\n        scope.$watch('msg.popup', function(newVal) {\n            let popup = document.getElementById(\"custom-popup-overlay\");\n            if (newVal === true) {\n                popup.style.display = \"flex\";\n            } else if (newVal === false) {\n                popup.style.display = \"none\";\n            }\n        });\n\n        window.closePopup = function() {\n            let popup = document.getElementById(\"custom-popup-overlay\");\n            popup.style.display = \"none\";\n        };\n    })(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 940,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "68137994396c5fc3",
+        "type": "inject",
+        "z": "923f932cb3917264",
+        "name": "",
+        "props": [
+            {
+                "p": "popup",
+                "v": "false",
+                "vt": "bool"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 710,
+        "y": 220,
+        "wires": [
+            [
+                "c0b059d76a4b273f"
+            ]
+        ]
+    },
+    {
+        "id": "52324998d518cf5d",
+        "type": "socketcan-config",
+        "interface": "can0"
+    },
+    {
+        "id": "51f10fd8671f20d4",
+        "type": "ui_group",
+        "name": "Default",
+        "tab": "5fe3bc7a44522385",
+        "order": 1,
+        "disp": false,
+        "width": 20,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "5fe3bc7a44522385",
+        "type": "ui_tab",
+        "name": "NOCKANDA ADAS",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": true
+    }
+]
